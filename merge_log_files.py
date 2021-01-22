@@ -20,16 +20,20 @@ args = parser.parse_args()
 first_log_file = open(args.first_log_path)
 second_log_file = open(args.second_log_path)
 
+first_different_line = ''
+second_different_line = ''
 for first_line, second_line in zip(first_log_file, second_log_file):
 	if first_line == second_line:
 		print(first_line, end='')
 	else:
+		first_different_line = first_line
+		second_different_line = second_line
 		break
 
 first_mtime = os.stat(args.first_log_path).st_mtime
 second_mtime = os.stat(args.second_log_path).st_mtime
 
 if first_mtime <= second_mtime:
-	concatenate_lines(first_line, first_log_file, second_line, second_log_file)
+	concatenate_lines(first_different_line, first_log_file, second_different_line, second_log_file)
 else:
-	concatenate_lines(second_line, second_log_file, first_line, first_log_file)
+	concatenate_lines(second_different_line, second_log_file, first_different_line, first_log_file)
